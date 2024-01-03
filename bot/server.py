@@ -32,6 +32,10 @@ if 'http://' in OAUTH2_REDIRECT_URI:
 def index():
     return render_template('index.html', link=INTRA_LOGIN_URL)
 
+@app.route('/rejected', methods=['GET'])
+def rejected():
+    return render_template('rejected.html')
+
 
 def get_user(token):
     user = requests.get('https://api.intra.42.fr/v2/me', headers={
@@ -80,7 +84,7 @@ def auth():
         return redirect(authorization_url)
     else:
         #INFO: el bourki meme should be returned here
-        return 'You are not a freax member'
+        return redirect('/rejected')
 
 
 
@@ -112,7 +116,7 @@ def add_to_guild(access_token, userID, guildID):
     'Content-Type': 'application/json'
     }
     response = requests.put(url=url, headers=headers, json=data)
-    return redirect(f'https://discord.com/channels/{guildID}/general')
+    return redirect('https://discord.com/channels/1191758454499573842/1191758454499573845')
 
 @app.route('/callback')
 def callback():
