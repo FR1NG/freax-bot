@@ -5,10 +5,6 @@ from dotenv import dotenv_values
 from requests_oauthlib import OAuth2Session
 import os
 
-# config = dotenv_values('.env')
-
-
-
 DOMAIN = os.environ.get('DOMAIN')
 OAUTH2_REDIRECT_URI = f'{DOMAIN}/callback'
 OAUTH2_CLIENT_ID = os.environ.get('DISCORD_OAUTH2_CLIENT_ID')
@@ -66,8 +62,6 @@ def get_token(code)->str:
         })
         return res.json()['access_token']
     except Exception as e:
-        print(e)
-        print('error')
         return ''
 
 
@@ -84,8 +78,8 @@ def auth():
         authorization_url, state = discord.authorization_url(AUTHORIZATION_BASE_URL)
         session['oauth2_state'] = state
         return redirect(authorization_url)
-         # return 'You are a freax member'
     else:
+        #INFO: el bourki meme should be returned here
         return 'You are not a freax member'
 
 
@@ -107,17 +101,7 @@ def make_session(token=None, state=None, scope=None):
         token_updater=token_updater)
 
 
-# def get_discord_authorization():
-#     scope = request.args.get(
-#         'scope',
-#         'identify guilds.join')
-#     discord = make_session(scope=scope.split(' '))
-#     authorization_url, state = discord.authorization_url(AUTHORIZATION_BASE_URL)
-#     session['oauth2_state'] = state
-#     return redirect(authorization_url)
-
 def add_to_guild(access_token, userID, guildID):
-    print(f"user id: {userID}")
     url = f"{API_BASE_URL}/guilds/{guildID}/members/{userID}"
     botToken = os.environ.get('TOKEN')
     data = {
@@ -128,11 +112,7 @@ def add_to_guild(access_token, userID, guildID):
     'Content-Type': 'application/json'
     }
     response = requests.put(url=url, headers=headers, json=data)
-    print(response.text)
-    print(response.status_code)
-    if response.status_code == 204:
-        return 'done'
-    return 'error'
+    return redirect(f'https://discord.com/channels/{guildID}/general')
 
 @app.route('/callback')
 def callback():
@@ -146,6 +126,5 @@ def callback():
     session['oauth2_token'] = token
     api = make_session(token=token)
     user = api.get(f'{API_BASE_URL}/users/@me').json()
-    print(user)
     user_id = user.get('id')
     return add_to_guild(token.get('access_token'), user_id, GUILD_ID)

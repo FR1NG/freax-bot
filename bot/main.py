@@ -10,15 +10,10 @@ intent.reactions = True
 intent.guild_messages = True
 intent.guild_reactions = True
 intent.message_content = True
-# intent.commands = True
 
 bot = commands.Bot(command_prefix='/', intents=intent)
 
-# tree = discord.app_commands.CommandTree(bot)
-
-# @bot.command(name='mention', description='Mention everyone in the server')
 @bot.tree.command(name='mention', description='Mention everyone in the server')
-#@commands.has_permissions(mention_everyone=True)
 async def mention(interaction: discord.Interaction):
     username = interaction.user.name
     role = discord.utils.get(interaction.guild.roles, name='FREAX')
