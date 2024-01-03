@@ -2,17 +2,9 @@
 from dotenv import dotenv_values
 import discord
 from discord.ext import commands
+import os
 
-
-config = dotenv_values('.env')
-
-
-# uid = config['UID']
-# key = config['KEY']
-token = config.get('TOKEN') or ''
-
-print(token)
-
+token = os.environ.get('TOKEN')
 intent = discord.Intents.default()
 intent.members = True
 intent.messages = True
