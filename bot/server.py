@@ -116,7 +116,7 @@ def add_to_guild(access_token, userID, guildID):
     'Content-Type': 'application/json'
     }
     response = requests.put(url=url, headers=headers, json=data)
-    return redirect(f'https://discord.com/channels/{guildID}/general')
+    return redirect('https://discord.com/channels/1191758454499573842/1191758454499573845')
 
 @app.route('/callback')
 def callback():
