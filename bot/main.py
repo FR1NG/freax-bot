@@ -17,7 +17,7 @@ bot = commands.Bot(command_prefix='/', intents=intents)
 allowed_mentions = discord.AllowedMentions(roles=True)
 
 @bot.tree.command(name='mention', description='Mention a role in the server')
-async def mention(interaction: discord.Interaction, role_name: str = "freax"):
+async def mention(interaction: discord.Interaction, role_name: str = "FREAX"):
     role = discord.utils.get(interaction.guild.roles, name=role_name)
 
     if role:
